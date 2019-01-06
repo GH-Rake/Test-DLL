@@ -12,26 +12,26 @@ BOOL APIENTRY DllMain(HMODULE moduleHandle, DWORD reason, LPVOID reserved)
 {
 	switch (reason)
 	{
-	case DLL_PROCESS_ATTACH:
-	{
-		CreateThread(nullptr, 0, DisplayMessageBox, nullptr, 0, nullptr);
-		break;
-	}
+		case DLL_PROCESS_ATTACH:
+		{
+			CreateThread(nullptr, 0, DisplayMessageBox, nullptr, 0, nullptr);
+			break;
+		}
 
-	case DLL_THREAD_ATTACH:
-	{
-		break;
-	}
+		case DLL_THREAD_ATTACH:
+		{
+			break;
+		}
 
-	case DLL_PROCESS_DETACH:
-	{
-		break;
-	}
+		case DLL_PROCESS_DETACH:
+		{
+			break;
+		}
 
-	case DLL_THREAD_DETACH:
-	{
-		break;
-	}
+		case DLL_THREAD_DETACH:
+		{
+			break;
+		}
 	}
 
 	return true;
