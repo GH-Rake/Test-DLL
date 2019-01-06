@@ -1,9 +1,18 @@
 #include <Windows.h>
 
-extern "C" __declspec(dllexport)
 DWORD WINAPI DisplayMessageBox(LPVOID parameter)
 {
-	MessageBoxA(nullptr, "DLL Successfully Loaded", "Test DLL", 0);
+	MessageBoxA(nullptr, "DLL Successfully Loaded\nPress Insert to Eject DLL", "Test DLL", 0);
+
+	while (true)
+	{
+		if (GetAsyncKeyState(VK_INSERT) & 1)
+		{
+			FreeLibraryAndExitThread(HMODULE(parameter), NULL);
+			return 0;
+		}
+		Sleep(30);
+	}
 	return 0;
 }
 
@@ -12,26 +21,27 @@ BOOL APIENTRY DllMain(HMODULE moduleHandle, DWORD reason, LPVOID reserved)
 {
 	switch (reason)
 	{
-		case DLL_PROCESS_ATTACH:
-		{
-			CreateThread(nullptr, 0, DisplayMessageBox, nullptr, 0, nullptr);
-			break;
-		}
+	case DLL_PROCESS_ATTACH:
+	{
+		CreateThread(nullptr, 0, DisplayMessageBox, moduleHandle, 0, nullptr);
+		DisableThreadLibraryCalls(moduleHandle);
+		break;
+	}
 
-		case DLL_THREAD_ATTACH:
-		{
-			break;
-		}
+	case DLL_THREAD_ATTACH:
+	{
+		break;
+	}
 
-		case DLL_PROCESS_DETACH:
-		{
-			break;
-		}
+	case DLL_PROCESS_DETACH:
+	{
+		break;
+	}
 
-		case DLL_THREAD_DETACH:
-		{
-			break;
-		}
+	case DLL_THREAD_DETACH:
+	{
+		break;
+	}
 	}
 
 	return true;
